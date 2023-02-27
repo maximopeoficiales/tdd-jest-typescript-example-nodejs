@@ -14,5 +14,15 @@ describe("Endpoint Post", () => {
     expect(response.body).toHaveProperty("id");
   })
 
+  it("does not creates a new post", async () => {
+    const response = await request(app)
+      .post("/posts")
+      .set("user_id", "1")
+      .set("Content-Type", "application/json")
+      .send({ userId: 1000 })
+
+    expect(response.statusCode).toBe(400);
+  })
+
 
 })
