@@ -1,5 +1,5 @@
 import * as request from "supertest";
-import { app } from "..";
+import app from "../app";
 describe("Endpoint Post", () => {
 
   it("POST: create Post", async () => {
