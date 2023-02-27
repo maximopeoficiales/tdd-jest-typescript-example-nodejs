@@ -48,7 +48,7 @@ describe("Endpoint Post", () => {
 
     expect(mockedAxios.post.mock.calls.length).toEqual(0);
     // devuelve un error 500
-    expect(res.sendStatus.mock.calls).toEqual([[500]]);
+    expect(res.sendStatus.mock.calls).toEqual([[400]]);
   })
 
 })
