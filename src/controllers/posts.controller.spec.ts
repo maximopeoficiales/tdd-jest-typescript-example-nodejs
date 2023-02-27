@@ -1,10 +1,13 @@
-import axios from 'axios';
-import { postController } from './posts.controller';
-import { userController } from './users.controller';
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+import { PostController } from './posts.controller';
 
 describe("Endpoint Post", () => {
+  const axiosInstance = {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  }
+  const postController = new PostController(axiosInstance as any);
 
   it("POST: create Post", async () => {
     const mockUsers = [{ id: 1 }, { id: 2 }];
@@ -14,18 +17,18 @@ describe("Endpoint Post", () => {
       status: jest.fn().mockReturnThis(),
       send: jest.fn()
     }
-    mockedAxios.get.mockResolvedValue({
+    axiosInstance.get.mockResolvedValue({
       data: mockUsers
     });
-    mockedAxios.post.mockResolvedValue({
+    axiosInstance.post.mockResolvedValue({
       data: { id: 10000 }
     });
     await postController.post(req as any, res as any, () => { });
 
     expect(res.status.mock.calls).toEqual([[201]]);
     expect(res.send.mock.calls).toEqual([[{ id: 10000 }]]);
-    expect(mockedAxios.get.mock.calls).toEqual([["https://jsonplaceholder.typicode.com/users"]])
-    expect(mockedAxios.post.mock.calls).toEqual([["https://jsonplaceholder.typicode.com/posts", post]])
+    expect(axiosInstance.get.mock.calls).toEqual([["/users"]])
+    expect(axiosInstance.post.mock.calls).toEqual([["/posts", post]])
   })
 
   it("POST: should not create if userId doesNotExist", async () => {
@@ -37,14 +40,14 @@ describe("Endpoint Post", () => {
       send: jest.fn(),
       sendStatus: jest.fn()
     }
-    mockedAxios.get.mockResolvedValue({
+    axiosInstance.get.mockResolvedValue({
       data: mockUsers
     });
-    mockedAxios.post.mockClear();
+    axiosInstance.post.mockClear();
 
     await postController.post(req as any, res as any, () => { });
     // no crea un usuario porque no existe el id
-    expect(mockedAxios.post.mock.calls.length).toEqual(0);
+    expect(axiosInstance.post.mock.calls.length).toEqual(0);
     // devuelve un error 500
     expect(res.sendStatus.mock.calls).toEqual([[400]]);
   })

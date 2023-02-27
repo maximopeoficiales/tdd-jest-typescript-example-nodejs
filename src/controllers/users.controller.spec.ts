@@ -1,11 +1,18 @@
-import axios from 'axios';
-import { userController } from './users.controller';
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+import { UserController } from './users.controller';
+
+
 
 describe("Endpoint User", () => {
+  const axiosInstance = {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  }
+  const userController = new UserController(axiosInstance as any);
+
   it("GET: return user json", async () => {
-    mockedAxios.get.mockResolvedValue({ data: 1 });
+    axiosInstance.get.mockResolvedValue({ data: 1 });
     const res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
@@ -19,7 +26,7 @@ describe("Endpoint User", () => {
 
 
   it("POST: create one user return status 201", async () => {
-    mockedAxios.post.mockResolvedValue({ data: 1 });
+    axiosInstance.post.mockResolvedValue({ data: 1 });
     const res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
@@ -35,7 +42,7 @@ describe("Endpoint User", () => {
   })
 
   it("PUT: create one user return status 204", async () => {
-    mockedAxios.put.mockResolvedValue({ data: 1 });
+    axiosInstance.put.mockResolvedValue({ data: 1 });
     const res = {
       sendStatus: jest.fn(),
     };
@@ -50,7 +57,7 @@ describe("Endpoint User", () => {
   })
 
   it("DELETE: delete one user return status 204", async () => {
-    mockedAxios.delete.mockResolvedValue({ data: 1 });
+    axiosInstance.delete.mockResolvedValue({ data: 1 });
     const res = {
       sendStatus: jest.fn(),
     };
