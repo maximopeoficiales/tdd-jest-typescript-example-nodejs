@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-export class UserController {
+
+export class PostController {
 
   constructor() { }
 
@@ -9,9 +10,14 @@ export class UserController {
     return res.status(200).send(data);
   }
   post = async (req: Request, res: Response, next: NextFunction) => {
-    const { body } = req.body;
-    const { data } = await axios.post("https://jsonplaceholder.typicode.com/users", body);
-    return res.status(201).send(data);
+    const { data: users } = await axios.get("https://jsonplaceholder.typicode.com/users");
+    const found = users.find(u => u.id === req.body.userId);
+    if (found) {
+      const { data } = await axios.post("https://jsonplaceholder.typicode.com/posts", req.body);
+      return res.status(201).send(data);
+    }
+    return res.sendStatus(500);
+
   }
   put = async (req: Request, res: Response, next: NextFunction) => {
     const { body } = req.body;
@@ -26,4 +32,4 @@ export class UserController {
   }
 }
 
-export const userController = new UserController();
+export const postController = new PostController();

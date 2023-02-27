@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { userController } from './controllers/users';
+import { userController } from './users';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
