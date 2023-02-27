@@ -47,7 +47,7 @@ describe("Endpoint Post", () => {
 
     await postController.post(req as any, res as any, () => { });
     // no crea un usuario porque no existe el id
-    expect(axiosInstance.post.mock.calls.length).toEqual(0);
+    expect(axiosInstance.post).not.toBeCalled();
     // devuelve un error 500
     expect(res.sendStatus.mock.calls).toEqual([[400]]);
   })

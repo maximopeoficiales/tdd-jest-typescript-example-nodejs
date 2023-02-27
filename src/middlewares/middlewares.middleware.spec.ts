@@ -13,9 +13,9 @@ describe("Middleware", () => {
       await authenticate(req as any, res as any, next as any);
       expect(req.header.mock.calls).toEqual([["user_id"]])
       // sendStatus has not been called
-      expect(res.sendStatus.mock.calls.length).toEqual(0)
+      expect(res.sendStatus).not.toBeCalled();
       // the function next was called
-      expect(next.mock.calls.length).toEqual(1)
+      expect(next).toBeCalled();
     })
   })
 })
