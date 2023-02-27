@@ -1,4 +1,4 @@
-import { authenticate } from "./authenticate"
+import { authenticate } from "./authenticate.middleware"
 
 describe("Middleware", () => {
   describe('Authenticate', () => {
