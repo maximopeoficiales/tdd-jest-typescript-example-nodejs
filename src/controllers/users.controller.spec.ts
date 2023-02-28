@@ -1,4 +1,4 @@
-import { UserController } from './users';
+import { UserController } from './user.controller';
 import * as httpMocks from 'node-mocks-http';
 
 describe("Endpoint User", () => {

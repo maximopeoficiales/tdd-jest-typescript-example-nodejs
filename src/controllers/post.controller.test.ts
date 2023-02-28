@@ -1,4 +1,4 @@
-import { PostController } from './posts';
+import { PostController } from './post.controller';
 import * as httpMocks from 'node-mocks-http';
 
 describe("Endpoint Post", () => {
