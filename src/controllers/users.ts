@@ -6,12 +6,12 @@ export class UserController {
 
   get = async (req: Request, res: Response, next: NextFunction) => {
     const { data } = await this.axios.get("/users");
-    return res.status(200).send(data);
+    return res.status(200).json(data);
   }
   post = async (req: Request, res: Response, next: NextFunction) => {
     const { body } = req.body;
     const { data } = await this.axios.post("/users", body);
-    return res.status(201).send(data);
+    return res.status(201).json(data);
   }
   put = async (req: Request, res: Response, next: NextFunction) => {
     const { body } = req.body;

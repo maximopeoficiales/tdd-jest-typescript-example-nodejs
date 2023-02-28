@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { PostController } from './controllers/posts.controller';
-import { UserController } from './controllers/users.controller';
+import { PostController } from './controllers/posts';
+import { UserController } from './controllers/users';
 import { authenticate } from './middlewares/authenticate.middleware';
 import { axiosInstance } from './services/axios';
 const app = express();

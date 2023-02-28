@@ -1,4 +1,5 @@
-import { PostController } from './posts.controller';
+import { PostController } from './posts';
+import * as httpMocks from 'node-mocks-http';
 
 describe("Endpoint Post", () => {
   const axiosInstance = {
@@ -12,11 +13,9 @@ describe("Endpoint Post", () => {
   it("POST: create Post", async () => {
     const mockUsers = [{ id: 1 }, { id: 2 }];
     const post = { userId: 1, title: "Titulo", body: "Cuerpo del post" }
-    const req = { body: post }
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn()
-    }
+    const req = httpMocks.createRequest();
+    const res = httpMocks.createResponse();
+    req.body = post
     axiosInstance.get.mockResolvedValue({
       data: mockUsers
     });
@@ -25,8 +24,8 @@ describe("Endpoint Post", () => {
     });
     await postController.post(req as any, res as any, () => { });
 
-    expect(res.status.mock.calls).toEqual([[201]]);
-    expect(res.send.mock.calls).toEqual([[{ id: 10000 }]]);
+    expect(res.statusCode).toEqual(201);
+    expect(res._getJSONData()).toEqual({ id: 10000 });
     expect(axiosInstance.get.mock.calls).toEqual([["/users"]])
     expect(axiosInstance.post.mock.calls).toEqual([["/posts", post]])
   })
@@ -34,22 +33,19 @@ describe("Endpoint Post", () => {
   it("POST: should not create if userId doesNotExist", async () => {
     const mockUsers = [{ id: 1 }, { id: 2 }];
     const post = { userId: 3, title: "Titulo", body: "Cuerpo del post" }
-    const req = { body: post }
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-      sendStatus: jest.fn()
-    }
+    const req = httpMocks.createRequest();
+    const res = httpMocks.createResponse();
+    req.body = post;
     axiosInstance.get.mockResolvedValue({
       data: mockUsers
     });
     axiosInstance.post.mockClear();
 
-    await postController.post(req as any, res as any, () => { });
+    await postController.post(req, res, () => { });
     // no crea un usuario porque no existe el id
     expect(axiosInstance.post).not.toBeCalled();
     // devuelve un error 500
-    expect(res.sendStatus.mock.calls).toEqual([[400]]);
+    expect(res.statusCode).toEqual(400);
   })
 
 })

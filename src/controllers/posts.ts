@@ -10,7 +10,7 @@ export class PostController {
     const found = users.find((u: { id: number }) => u.id == parseInt(req.body.userId));
     if (found) {
       const { data } = await this.axios.post("/posts", req.body);
-      return res.status(201).send(data);
+      return res.status(201).json(data);
     }
     return res.sendStatus(400);
 
