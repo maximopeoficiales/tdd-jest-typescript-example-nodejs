@@ -16,7 +16,7 @@ describe("Endpoint User", () => {
     await userController.get({} as any, res, {} as any);
 
     expect(res.statusCode).toEqual(200);
-    expect(res._isEndCalled).toBeTruthy();
+    expect(res._isEndCalled()).toBeTruthy();
   })
 
 
@@ -28,7 +28,7 @@ describe("Endpoint User", () => {
     await userController.post(req as any, res, {} as any);
 
     expect(res.statusCode).toEqual(201);
-    expect(res._isEndCalled).toBeTruthy();
+    expect(res._isEndCalled()).toBeTruthy();
   })
 
   it("PUT: create one user return status 204", async () => {
